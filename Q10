@@ -1,0 +1,19 @@
+def is_palindrome(s):
+    # Base case: if the string is empty or has only one character, it's a palindrome
+    if len(s) <= 1:
+        return True
+    # Check if the first and last characters are the same
+    if s[0] == s[-1]:
+        # If they are the same, recursively check the substring without the first and last characters
+        return is_palindrome(s[1:-1])
+    else:
+        # If the first and last characters are not the same, it's not a palindrome
+        return False
+
+# Example usage:
+input_string = input("Enter a string to check if it's a palindrome: ")
+
+if is_palindrome(input_string):
+    print("The string is a palindrome.")
+else:
+    print("The string is not a palindrome.")
