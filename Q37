@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+// Function to recursively generate the list of factors for a given number
+void generateFactors(int n, int divisor) {
+    if (divisor > n) // Base case: when the divisor exceeds the number itself
+        return;
+
+    if (n % divisor == 0) // If n is divisible by the current divisor
+        printf("%d ", divisor);
+
+    generateFactors(n, divisor + 1); // Recur with the next divisor
+}
+
+// Example usage
+int main() {
+    int n;
+    printf("Enter a number to generate its factors: ");
+    scanf("%d", &n);
+
+    printf("Factors of %d are: ", n);
+    generateFactors(n, 1); // Start with divisor 1
+    printf("\n");
+
+    return 0;
+}
