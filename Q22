@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <limits.h>
+
+// Function to find the minimum of two numbers
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+// Function to find the sum of probabilities from i to j
+float sum(float freq[], int i, int j) {
+    float s = 0;
+    for (int k = i; k <= j; k++)
+        s += freq[k];
+    return s;
+}
+
+// Function to find the optimal binary search tree cost
+float optimalBST(float freq[], int n) {
+    // Create a 2D table to store the cost of optimal BST
+    float cost[n][n];
+
+    // Initialize the table with 0
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cost[i][j] = 0;
+
+    // Fill the table diagonally
+    for (int len = 1; len <= n; len++) {
+        for (int i = 0; i <= n - len + 1; i++) {
+            int j = i + len - 1;
+            cost[i][j] = INT_MAX;
+            for (int r = i; r <= j; r++) {
+                float c = ((r > i) ? cost[i][r - 1] : 0) +
+                          ((r < j) ? cost[r + 1][j] : 0) + sum(freq, i, j);
+                cost[i][j] = min(cost[i][j], c);
+            }
+        }
+    }
+    return cost[0][n - 1];
+}
+
+// Example usage
+int main() {
+    float keys[] = {10, 12, 20};
+    float freq[] = {4, 2, 6};
+    int n = sizeof(keys) / sizeof(keys[0]);
+    printf("Cost of optimal binary search tree is %.2f", optimalBST(freq, n));
+    return 0;
+}
