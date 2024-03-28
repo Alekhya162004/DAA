@@ -1,0 +1,53 @@
+#include <stdio.h>
+
+#define MAX_SIZE 100
+
+// Function to insert a number into a list at a specified position
+void insertNumber(int list[], int *size, int number, int position) {
+    if (*size >= MAX_SIZE) {
+        printf("List is full. Cannot insert more elements.\n");
+        return;
+    }
+
+    if (position < 0 || position > *size) {
+        printf("Invalid position.\n");
+        return;
+    }
+
+    // Shift elements to the right to create space for the new number
+    for (int i = *size - 1; i >= position; i--) {
+        list[i + 1] = list[i];
+    }
+
+    // Insert the number at the specified position
+    list[position] = number;
+    (*size)++;
+}
+
+// Function to display the elements of the list
+void displayList(int list[], int size) {
+    printf("List: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", list[i]);
+    }
+    printf("\n");
+}
+
+// Example usage
+int main() {
+    int list[MAX_SIZE] = {1, 3, 5, 7, 9};
+    int size = 5; // Initial size of the list
+
+    printf("Original ");
+    displayList(list, size);
+
+    int number = 4; // Number to insert
+    int position = 2; // Position to insert
+
+    insertNumber(list, &size, number, position);
+
+    printf("After inserting %d at position %d, ", number, position);
+    displayList(list, size);
+
+    return 0;
+}
