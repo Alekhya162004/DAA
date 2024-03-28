@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+// Function to print the pattern recursively
+void printPattern(int n, int row, int col) {
+    if (row > n)
+        return;
+    
+    if (col <= row) {
+        printf("%d ", col);
+        printPattern(n, row, col + 1);
+    }
+    else {
+        printf("\n");
+        printPattern(n, row + 1, 1);
+    }
+}
+
+// Example usage
+int main() {
+    int n = 4;  // Change the value of n as needed
+    printPattern(n, 1, 1);
+    return 0;
+}
