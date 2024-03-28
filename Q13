@@ -1,0 +1,12 @@
+def reverse_string(s):
+    if len(s) == 0:
+        return s
+    else:
+        return reverse_string(s[1:]) + s[0]
+
+# Example usage:
+input_string = input("Enter a string: ")
+
+# Print the reverse of the string using recursion
+reversed_string = reverse_string(input_string)
+print("Reverse of the string:", reversed_string)
