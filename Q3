@@ -1,0 +1,40 @@
+def gcd_recursive(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd_recursive(b, a % b)
+
+def factorize(n):
+    factors = []
+    divisor = 2
+    while n > 1:
+        if n % divisor == 0:
+            factors.append(divisor)
+            n //= divisor
+        else:
+            divisor += 1
+    return factors
+
+def gcd_factorization(a, b):
+    factors_a = factorize(a)
+    factors_b = factorize(b)
+    common_factors = []
+    
+    for factor in factors_a:
+        if factor in factors_b:
+            common_factors.append(factor)
+            factors_b.remove(factor)
+            
+    gcd = 1
+    for factor in common_factors:
+        gcd *= factor
+    
+    return gcd
+
+# Taking input from the user
+num1 = int(input("Enter first number: "))
+num2 = int(input("Enter second number: "))
+
+# Calculate GCD using recursive factorization
+gcd = gcd_factorization(num1, num2)
+print("GCD of", num1, "and", num2, "is:", gcd)
