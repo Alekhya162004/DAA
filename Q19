@@ -1,0 +1,29 @@
+def knapsack_fractional(weights, values, capacity):
+    n = len(weights)
+    # Calculate value per unit weight for each item
+    value_per_weight = [(values[i] / weights[i], weights[i], values[i]) for i in range(n)]
+    # Sort items based on value per unit weight in descending order
+    value_per_weight.sort(reverse=True)
+
+    max_value = 0
+    remaining_capacity = capacity
+
+    for value_per_unit, weight, value in value_per_weight:
+        if remaining_capacity >= weight:
+            # Take the entire item
+            max_value += value
+            remaining_capacity -= weight
+        else:
+            # Take a fraction of the item to fill the knapsack
+            max_value += remaining_capacity * value_per_unit
+            break
+
+    return max_value
+
+# Example usage:
+weights = [10, 20, 30]
+values = [60, 100, 120]
+capacity = 50
+
+max_value = knapsack_fractional(weights, values, capacity)
+print("Maximum value that can be obtained:", max_value)
