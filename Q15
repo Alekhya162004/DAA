@@ -1,0 +1,73 @@
+def strassen_matrix_multiply(matrix1, matrix2):
+    n = len(matrix1)
+    
+    # Base case: If the matrices are 1x1, perform simple multiplication
+    if n == 1:
+        return [[matrix1[0][0] * matrix2[0][0]]]
+    
+    # Divide matrices into submatrices
+    a11, a12, a21, a22 = divide_matrix(matrix1)
+    b11, b12, b21, b22 = divide_matrix(matrix2)
+    
+    # Recursive steps
+    p1 = strassen_matrix_multiply(add_matrices(a11, a22), add_matrices(b11, b22))
+    p2 = strassen_matrix_multiply(add_matrices(a21, a22), b11)
+    p3 = strassen_matrix_multiply(a11, subtract_matrices(b12, b22))
+    p4 = strassen_matrix_multiply(a22, subtract_matrices(b21, b11))
+    p5 = strassen_matrix_multiply(add_matrices(a11, a12), b22)
+    p6 = strassen_matrix_multiply(subtract_matrices(a21, a11), add_matrices(b11, b12))
+    p7 = strassen_matrix_multiply(subtract_matrices(a12, a22), add_matrices(b21, b22))
+    
+    # Calculate the resulting submatrices
+    c11 = add_matrices(subtract_matrices(add_matrices(p1, p4), p5), p7)
+    c12 = add_matrices(p3, p5)
+    c21 = add_matrices(p2, p4)
+    c22 = add_matrices(subtract_matrices(add_matrices(p1, p3), p2), p6)
+    
+    # Combine the resulting submatrices into a single matrix
+    result_matrix = combine_matrices(c11, c12, c21, c22)
+    
+    return result_matrix
+
+def divide_matrix(matrix):
+    n = len(matrix)
+    mid = n // 2
+    a11 = [row[:mid] for row in matrix[:mid]]
+    a12 = [row[mid:] for row in matrix[:mid]]
+    a21 = [row[:mid] for row in matrix[mid:]]
+    a22 = [row[mid:] for row in matrix[mid:]]
+    return a11, a12, a21, a22
+
+def add_matrices(matrix1, matrix2):
+    return [[matrix1[i][j] + matrix2[i][j] for j in range(len(matrix1))] for i in range(len(matrix1))]
+
+def subtract_matrices(matrix1, matrix2):
+    return [[matrix1[i][j] - matrix2[i][j] for j in range(len(matrix1))] for i in range(len(matrix1))]
+
+def combine_matrices(matrix1, matrix2, matrix3, matrix4):
+    n = len(matrix1)
+    mid = n // 2
+    result_matrix = [[0] * n for _ in range(n)]
+    for i in range(mid):
+        for j in range(mid):
+            result_matrix[i][j] = matrix1[i][j]
+            result_matrix[i][j + mid] = matrix2[i][j]
+            result_matrix[i + mid][j] = matrix3[i][j]
+            result_matrix[i + mid][j + mid] = matrix4[i][j]
+    return result_matrix
+
+# Example usage:
+matrix1 = [[1, 2, 3, 4],
+           [5, 6, 7, 8],
+           [9, 10, 11, 12],
+           [13, 14, 15, 16]]
+
+matrix2 = [[17, 18, 19, 20],
+           [21, 22, 23, 24],
+           [25, 26, 27, 28],
+           [29, 30, 31, 32]]
+
+result = strassen_matrix_multiply(matrix1, matrix2)
+print("Resultant Matrix:")
+for row in result:
+    print(row)
