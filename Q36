@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define V 5 // Number of vertices in the graph
+
+// Function to check if the vertex v can be added to the path path[] at index pos
+bool isSafe(int v, bool graph[V][V], int path[], int pos) {
+    // Check if this vertex is adjacent to the previously added vertex
+    if (!graph[path[pos - 1]][v])
+        return false;
+
+    // Check if the vertex has not already been included in the path
+    for (int i = 0; i < pos; i++)
+        if (path[i] == v)
+            return false;
+
+    return true;
+}
+
+// Function to recursively find Hamiltonian circuit in graph
+bool hamiltonianCircuitUtil(bool graph[V][V], int path[], int pos) {
+    // Base case: If all vertices are included in the path
+    if (pos == V) {
+        // Check if there is an edge from the last added vertex to the first vertex
+        if (graph[path[pos - 1]][path[0]])
+            return true;
+        else
+            return false;
+    }
+
+    // Try different vertices as the next candidate in Hamiltonian Circuit
+    for (int v = 1; v < V; v++) {
+        if (isSafe(v, graph, path, pos)) {
+            path[pos] = v;
+
+            // Recur to construct the rest of the path
+            if (hamiltonianCircuitUtil(graph, path, pos + 1))
+                return true;
+
+            // If including vertex v doesn't lead to a solution, remove it from the path
+            path[pos] = -1;
+        }
+    }
+
+    // If no vertex can be added to the path, return false
+    return false;
+}
+
+// Function to find a Hamiltonian circuit in graph
+bool hamiltonianCircuit(bool graph[V][V]) {
+    int path[V];
+    for (int i = 0; i < V; i++)
+        path[i] = -1;
+
+    // Start with the first vertex as the starting point
+    path[0] = 0;
+
+    if (hamiltonianCircuitUtil(graph, path, 1) == false) {
+        printf("No Hamiltonian circuit exists");
+        return false;
+    }
+
+    // Print the Hamiltonian circuit
+    printf("Hamiltonian circuit exists: ");
+    for (int i = 0; i < V; i++)
+        printf("%d ", path[i]);
+    printf("%d\n", path[0]);
+
+    return true;
+}
+
+// Example usage
+int main() {
+    bool graph[V][V] = {
+        {0, 1, 0, 1, 0},
+        {1, 0, 1, 1, 1},
+        {0, 1, 0, 0, 1},
+        {1, 1, 0, 0, 1},
+        {0, 1, 1, 1, 0}
+    };
+
+    hamiltonianCircuit(graph);
+
+    return 0;
+}
