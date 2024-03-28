@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define V 4 // Number of cities
+
+// Function to find the minimum of two numbers
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+// Function to find the factorial of a number
+int factorial(int n) {
+    if (n <= 1)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
+
+// Function to find the optimal cost for TSP using brute force
+int tspBruteForce(int graph[][V], int start) {
+    int minCost = INT_MAX;
+
+    // Generate all permutations of cities
+    int permutation[V];
+    for (int i = 0; i < V; i++)
+        permutation[i] = i;
+
+    do {
+        // Calculate the cost of the current permutation
+        int currentCost = 0;
+        int currentVertex = start;
+        for (int i = 0; i < V; i++) {
+            currentCost += graph[currentVertex][permutation[i]];
+            currentVertex = permutation[i];
+        }
+        currentCost += graph[currentVertex][start];
+
+        // Update the minimum cost
+        minCost = min(minCost, currentCost);
+    } while (next_permutation(permutation, permutation + V));
+
+    return minCost;
+}
+
+// Example usage
+int main() {
+    int graph[V][V] = {
+        {0, 10, 15, 20},
+        {10, 0, 35, 25},
+        {15, 35, 0, 30},
+        {20, 25, 30, 0}
+    };
+    int start = 0; // Starting city
+
+    int optimalCost = tspBruteForce(graph, start);
+    printf("Optimal cost for TSP: %d\n", optimalCost);
+
+    return 0;
+}
