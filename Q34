@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 100
+
+// Function to print the subset
+void printSubset(int subset[], int subsetSize) {
+    printf("Subset with sum is found: ");
+    for (int i = 0; i < subsetSize; i++)
+        printf("%d ", subset[i]);
+    printf("\n");
+}
+
+// Function to recursively find the subset with the given sum
+bool isSubsetSum(int set[], int n, int targetSum, int subset[], int subsetSize, int index) {
+    // If subset has been found, print it and return true
+    if (targetSum == 0) {
+        printSubset(subset, subsetSize);
+        return true;
+    }
+
+    // If target sum becomes negative or no elements left to consider
+    if (targetSum < 0 || index >= n)
+        return false;
+
+    // Include current element in the subset and recur with remaining sum
+    subset[subsetSize] = set[index];
+    return isSubsetSum(set, n, targetSum - set[index], subset, subsetSize + 1, index + 1) ||
+           // Exclude current element from the subset and recur with remaining sum
+           isSubsetSum(set, n, targetSum, subset, subsetSize, index + 1);
+}
+
+// Function to solve the subset sum problem
+void subsetSum(int set[], int n, int targetSum) {
+    int subset[MAX_SIZE];
+
+    if (!isSubsetSum(set, n, targetSum, subset, 0, 0))
+        printf("No subset with sum %d is found\n", targetSum);
+}
+
+// Example usage
+int main() {
+    int set[] = {3, 34, 4, 12, 5, 2};
+    int n = sizeof(set) / sizeof(set[0]);
+    int targetSum = 9;
+
+    subsetSum(set, n, targetSum);
+
+    return 0;
+}
