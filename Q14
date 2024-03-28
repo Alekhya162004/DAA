@@ -1,0 +1,24 @@
+def find_min_max(lst):
+    if not lst:  # if the list is empty
+        return None, None
+
+    min_val = lst[0]  # Assume the first element is the minimum
+    max_val = lst[0]  # Assume the first element is the maximum
+
+    for num in lst:
+        if num < min_val:
+            min_val = num
+        elif num > max_val:
+            max_val = num
+
+    return min_val, max_val
+
+# Example usage:
+numbers = [7, 2, 5, 1, 9, 3, 10]
+
+min_val, max_val = find_min_max(numbers)
+if min_val is not None and max_val is not None:
+    print("Minimum value in the list:", min_val)
+    print("Maximum value in the list:", max_val)
+else:
+    print("The list is empty.")
