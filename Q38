@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define N 4 // Number of workers and tasks
+
+// Function to find the minimum cost assignment using branch and bound
+void assignmentProblem(int costMatrix[N][N], bool assigned[N], int worker, int totalCost, int *minCost) {
+    if (worker == N) {
+        // If all workers are assigned tasks, update the minimum cost
+        if (totalCost < *minCost)
+            *minCost = totalCost;
+        return;
+    }
+
+    // Check each task for assignment to the current worker
+    for (int task = 0; task < N; task++) {
+        if (!assigned[task]) {
+            // Mark the task as assigned to the current worker
+            assigned[task] = true;
+            // Recur for the next worker with the updated total cost
+            assignmentProblem(costMatrix, assigned, worker + 1, totalCost + costMatrix[worker][task], minCost);
+            // Unmark the task for backtracking
+            assigned[task] = false;
+        }
+    }
+}
+
+// Wrapper function for the assignment problem
+int solveAssignmentProblem(int costMatrix[N][N]) {
+    bool assigned[N] = {false}; // Array to keep track of assigned tasks
+    int minCost = __INT_MAX__; // Initialize minimum cost with maximum possible value
+    assignmentProblem(costMatrix, assigned, 0, 0, &minCost);
+    return minCost;
+}
+
+// Example usage
+int main() {
+    int costMatrix[N][N] = {
+        {9, 2, 7, 8},
+        {6, 4, 3, 7},
+        {5, 8, 1, 8},
+        {7, 6, 9, 4}
+    };
+
+    int minCost = solveAssignmentProblem(costMatrix);
+    printf("Minimum cost for assignment: %d\n", minCost);
+
+    return 0;
+}
