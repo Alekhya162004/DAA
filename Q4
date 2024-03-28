@@ -1,0 +1,17 @@
+def find_largest(arr):
+    if len(arr) == 0:
+        return None
+    
+    max_element = arr[0]  # Assume the first element is the largest
+    
+    # Iterate through the array to find the largest element
+    for num in arr:
+        if num > max_element:
+            max_element = num
+            
+    return max_element
+
+# Example usage:
+array = [5, 9, 3, 7, 11, 2, 8]
+largest = find_largest(array)
+print("The largest element in the array is:", largest)
